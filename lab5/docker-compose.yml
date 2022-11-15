@@ -1,0 +1,37 @@
+version: "3.3"
+services:
+  api:
+    build: api
+    ports:
+      - "8000:80"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - frontend
+      - mongo-db
+    networks:
+      - backend
+
+  mongo-db:
+    image: "mongo:latest"
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - ./production/db:/data/*
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api/build:/usr/src/app/build
+    
+
+networks:
+  backend:
+    driver: bridge

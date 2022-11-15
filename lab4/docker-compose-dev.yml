@@ -1,0 +1,28 @@
+version: "3.3"
+services:
+  api:
+    image: node:18-alpine
+    ports:
+      - "8000:80"
+    working_dir: /usr/src/app
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./src:/usr/src/app
+    depends_on:
+      - mongo-db
+    networks:
+      - backend
+    command: npm run server:dev
+
+  mongo-db:
+    image: "mongo:latest"
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+networks:
+  backend:
+    driver: bridge

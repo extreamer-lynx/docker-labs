@@ -1,0 +1,6 @@
+{
+    "jwt": "sec tok",
+    "mongoUri": "mongodb://admin:admin@mongo-db:27017/admin",
+    "port": 80,
+    "host": "0.0.0.0"
+}

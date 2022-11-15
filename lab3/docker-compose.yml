@@ -1,0 +1,25 @@
+version: "3.3"
+services:
+  api:
+    build: src
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - mongo-db
+    networks:
+      - backend
+
+  mongo-db:
+    image: "mongo:latest"
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+networks:
+  backend:
+    driver: bridge
