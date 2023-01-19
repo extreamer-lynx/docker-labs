@@ -1,0 +1,43 @@
+version: "3.3"
+services:
+  api:
+    build: api
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - frontend
+      - mongo-db
+    networks:
+      - backend
+
+  mongo-db:
+    image: "mongo:latest"
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - ./production/db:/data/*
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./api/build:/usr/src/app/build
+    
+  nginx:
+    image: nginx:1-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - api
+    networks:
+      - backend
+    restart: on-failure
+
+networks:
+  backend:
