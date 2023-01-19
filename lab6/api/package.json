@@ -1,0 +1,29 @@
+{
+  "name": "task-app2",
+  "version": "1.0.0",
+  "description": "A small task app",
+  "author": "Vlad Franchuk <franchuk@gmail.com>",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/app",
+    "server:dev": "npm install && nodemon ./bin/app",
+    "server:install": "npm install"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "confi": "^10.0.1",
+    "config": "^3.3.6",
+    "cross-env": "^7.0.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.10.0",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3",
+    "nodemon": "^2.0.7",
+    "pino": "^6.11.2",
+    "pino-http": "^5.5.0",
+    "pino-pretty": "^4.7.1"
+  }
+}

@@ -1,0 +1,56 @@
+version: "3.3"
+services:
+  api:
+    image: node:18-alpine
+    working_dir: /usr/src/app
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./api:/usr/src/app
+    depends_on:
+      - mongo-db
+    networks:
+      - backend
+    command: npm run server:dev
+
+  mongo-db:
+    image: "mongo:latest"
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    networks:
+      - backend
+    environment:
+      PORT: 80
+      CHOKIDAR_USEPOLLING: 1
+    command: npm run start
+    volumes:
+      - ./frontend
+      - ./api/build:/usr/src/app/build
+    stdin_open: true
+    tty: true
+
+  nginx:
+    image: nginx:1-alpine
+    container_name: websystem-docker-demo-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - frontend
+      - api
+    networks:
+      - backend
+    restart: on-failure
+
+networks:
+  backend:
